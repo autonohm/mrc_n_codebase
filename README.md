@@ -36,6 +36,10 @@ The goal is for the students to integrate their work into the given system.
 
 ## ROS 2 Navigation Stack
 
+## Python Simulator ROS 2
+
+[Python Simulator by Prof May](https://github.com/autonohm/ohm_mecanum_sim/tree/ros2)
+
 
 
 # 3. Hardware Description
