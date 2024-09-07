@@ -165,7 +165,7 @@ class Master_Control_Server:
 
 
         if (not valid_request):
-            rospy.logerr(logger_prefix + "This robot [" + req.robot_name + "] has not connected before asking for tasks!")  
+            rospy.logerr(logger_prefix + "This robot [" + req.robot_name + "] has not connected before. Rejecting task request!")  
         else:
             res.goals = self.target_task.goals
             res.success = True
