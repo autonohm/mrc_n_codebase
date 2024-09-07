@@ -1,2 +1,4 @@
 string robot_name
 ---
+bool success
+mcs_goal_pose[] goals
