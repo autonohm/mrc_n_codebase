@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>mcr_n_codebase</name>
+  <name>mrc_n_codebase</name>
   <version>0.0.0</version>
-  <description>The mcr_n_codebase package</description>
+  <description>The mrc_n_codebase package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
