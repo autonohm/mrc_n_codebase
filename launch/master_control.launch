@@ -1,0 +1,13 @@
+
+<launch>
+
+    <node name="master_control_server" pkg="mcr_n_codebase" type="master_control_node.py" output="screen">
+        
+        <param name="folder_path"  value="$(find mcr_n_codebase)/master_control_tasks" />
+
+        <param name="save_current_req_topic"  value="save_current_req" /> 
+        <param name="start_test_topic"        value="start_test" />
+        <param name="get_plan_topic"          value="move_base/make_plan" />
+
+    </node>
+</launch>
