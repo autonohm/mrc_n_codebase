@@ -57,6 +57,7 @@ add_message_files(
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
+  mcs_confirm_goal_reached.srv
   mcs_connect.srv
   mcs_get_tasks.srv
 )
