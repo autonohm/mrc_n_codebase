@@ -5,13 +5,10 @@ import os
 import copy
 
 import rospy
-import tf
-from nav_msgs.msg import Path
-from geometry_msgs.msg import PointStamped
-from geometry_msgs.msg import PoseStamped
-from geometry_msgs.msg import Quaternion
-from geometry_msgs.msg import Transform#
-
+import tf2_ros
+import tf2_msgs.msg
+import tf.transformations as tft
+import geometry_msgs.msg 
 
 from mrc_n_codebase.msg import mcs_goal_pose
 
@@ -37,7 +34,7 @@ logger_prefix = "[MCS]\t"
 default_frame_id = "map"
 
 def getTfRotation(tf_quaternion):
-    result_quat = Quaternion()
+    result_quat = geometry_msgs.msg.Quaternion()
     result_quat.x = tf_quaternion[0]
     result_quat.y = tf_quaternion[1]
     result_quat.z = tf_quaternion[2]
@@ -47,7 +44,7 @@ def getTfRotation(tf_quaternion):
 class GoalPose:
     def __init__(self):
         self.name = "empty_goal_pose"
-        self.goal_pose = Transform()
+        self.goal_pose = geometry_msgs.msg.Transform()
 
 class Task:
     def __init__(self):
@@ -97,15 +94,15 @@ def read_task_from_file(path_to_file):
                 file_goal_pose = GoalPose()
 
                 ## translation
-                file_goal_pose.goal_pose.translation.x = float(currentline[1])
-                file_goal_pose.goal_pose.translation.y = float(currentline[2])
+                file_goal_pose.goal_pose.translation.x = float(currentline[2])
+                file_goal_pose.goal_pose.translation.y = float(currentline[3])
                 
                 ## orientation
-                yaw = float(currentline[3])
-                file_goal_pose.goal_pose.rotation = getTfRotation(transformations.quaternion_from_euler(0, 0, yaw))
+                yaw = float(currentline[4])
+                file_goal_pose.goal_pose.rotation = getTfRotation(tft.quaternion_from_euler(0, 0, yaw))
 
                 ## name
-                file_goal_pose.name = currentline[3]
+                file_goal_pose.name = str(currentline[1]).replace(" ", "")
                 
                 # save pose in path
                 file_task.goals.append(file_goal_pose)
@@ -151,12 +148,16 @@ class Master_Control_Server:
         for task in self.target_task.goals:
             score = GoalScore()
             score.name = task.name
+            self.goal_scores.append(score)
 
         rospy.loginfo(logger_prefix + "Successfully read tasks from " + str( len(files) ) + \
                          " files and found the target task [" + self.target_task_name + "]")
         
-        ## setup TF publisher? --> must be timer cb
-        self.tf_listener = tf.TransformListener()
+        ## setup TF listener and broadcaster
+        self.tf_buffer = tf2_ros.Buffer()
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+        self.tf_broadcaster = tf2_ros.TransformBroadcaster()
+        rospy.Timer(rospy.Duration(0.5), self.pub_poses_as_tf)
 
         ## Connection service + data
         self.topic_connect = rospy.get_param("~topic_connect", "master_control/connect")
@@ -187,6 +188,20 @@ class Master_Control_Server:
 
 
         rospy.loginfo(logger_prefix + "Started..")     
+
+    def pub_poses_as_tf(self, event):
+        
+        for gp in self.target_task.goals:
+    
+            #rospy.loginfo(logger_prefix + "pub TF " + gp.name + " - tx=" + str(gp.goal_pose.translation.x) + " - ty=" + str(gp.goal_pose.translation.y) )    
+            t = geometry_msgs.msg.TransformStamped()
+            t.header.stamp = rospy.Time.now()
+            t.header.frame_id = 'map'
+            t.child_frame_id = gp.name
+            t.transform = gp.goal_pose
+
+            # Publish the transform
+            self.tf_broadcaster.sendTransform(t)
 
     def service_connect(self, req):
         self.robot_name = req.robot_name
@@ -297,7 +312,6 @@ class Master_Control_Server:
 
         res.success = True
         return res
-
 
     def service_set_finished(self, req):
         res = mcs_set_finishedResponse()

@@ -60,6 +60,7 @@ add_service_files(
   mcs_confirm_goal_reached.srv
   mcs_connect.srv
   mcs_get_tasks.srv
+  mcs_set_finished.srv
 )
 
 ## Generate actions in the 'action' folder

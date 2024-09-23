@@ -88,10 +88,14 @@ SUMMARY
 ========
 
 PARAMETERS
- * /master_control_server/folder_path: /home/your_machine/mrc_w...
- * /master_control_server/get_plan_topic: move_base/make_plan
- * /master_control_server/save_current_req_topic: save_current_req
- * /master_control_server/start_test_topic: start_test
+ * /master_control_server/folder_path: /home/marco/mrc_w...
+ * /master_control_server/max_goal_deviation_angular: 0.2
+ * /master_control_server/max_goal_deviation_linear: 0.1
+ * /master_control_server/robot_frame_id: base_link
+ * /master_control_server/target_task_name: test1
+ * /master_control_server/topic_confirm_goal_reached: master_control/co...
+ * /master_control_server/topic_connect: master_control/co...
+ * /master_control_server/topic_get_tasks: master_control/ge...
  * /rosdistro: noetic
  * /rosversion: 1.16.0
 
@@ -113,6 +117,11 @@ process[master_control_server-2]: started with pid [31300]
 [INFO] [1725714156.819780]: [MCS]       Started..
 
 ```
+
+If you open RVIZ and add the topic type 'TF', you should be able to see the goal poses visualized:
+
+![](https://github.com/autonohm/mcr_n_codebase/blob/main/images/mc_pose_example.png)
+
 
 ## 7.2 Connecting to the Server
 
