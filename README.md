@@ -31,6 +31,11 @@ The goal is for the students to integrate their work into the given system.
 
 # 2. Useful Links
 
+TODo Remove: hier dann bitte die Slides und größeren Files rein:
+
+https://1drv.ms/f/s!Av9EgKpWKlj-gp1GSEwbTssOGBg36A?e=d9G274
+
+
 ## Windows Sublinux
 
 ## ROS 2 Humble
