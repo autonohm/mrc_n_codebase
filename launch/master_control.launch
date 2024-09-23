@@ -5,7 +5,7 @@
         
         <!-- Teams are allowed to adjust this for their own testing purposes -->
         <param name="folder_path"                   value="$(find mrc_n_codebase)/master_control_tasks" />
-        <param name="target_task_name"              value="test1" /> 
+        <param name="target_task_name"              value="mockup_test" /> 
 
         <!-- Teams are not supposed to change params after this line! -->
         <param name="topic_connect"                 value="master_control/connect" />

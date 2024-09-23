@@ -1,0 +1,14 @@
+@startuml
+
+#orange:IDLE;
+#palegreen:CONNECT;
+#palegreen:GET TASK;
+repeat 
+    :select next goal;
+    :navigate to goal;
+    #palegreen:CONFIRM_GOAL_REACHED;
+repeat while (remaining goals ?) is (yes) not (no)
+
+#palegreen:SET_FINISHED;
+#orange:END;
+@enduml

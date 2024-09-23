@@ -41,6 +41,12 @@ def getTfRotation(tf_quaternion):
     result_quat.w = tf_quaternion[3]
     return result_quat
 
+def getQuatArray(tf_quaternion):
+    return [tf_quaternion.x, 
+            tf_quaternion.y,
+            tf_quaternion.z,
+            tf_quaternion.w]
+
 class GoalPose:
     def __init__(self):
         self.name = "empty_goal_pose"
@@ -63,9 +69,9 @@ class GoalScore:
         rospy.loginfo(prefix + "------")
         rospy.loginfo(prefix + "Goal Name:   " + self.name)
         rospy.loginfo(prefix + "reached:     " + str(self.is_reached))
-        rospy.loginfo(prefix + "time in s:   " + str(self.time_to_reach_s))
-        rospy.loginfo(prefix + "Linear Dev:  " + str(self.deviation_lin))
-        rospy.loginfo(prefix + "Angular Dev: " + str(self.deviation_ang))
+        rospy.loginfo(prefix + "time in s:   " + str(round(self.time_to_reach_s, 3)))
+        rospy.loginfo(prefix + "Linear Dev:  " + str(round(self.deviation_lin,   3)))
+        rospy.loginfo(prefix + "Angular Dev: " + str(round(self.deviation_ang,   3)))
         rospy.loginfo(prefix + "------")
 
 
@@ -249,6 +255,8 @@ class Master_Control_Server:
         res = mcs_confirm_goal_reachedResponse()
         res.success = False
 
+        rospy.loginfo(logger_prefix + "Trying to confirm reaching the goal pose [" + req.goal_name + "]..")
+
         if( not (self.robot_has_connected and self.sent_tasks_to_robot) ):
             rospy.logerr(logger_prefix + "You need to connect the robot and request tasks before confirming goals!")  
             return res
@@ -267,48 +275,51 @@ class Master_Control_Server:
 
         # get robot tf
         try:
-            # Wait for the transform to become available
-            self.tf_listener.waitForTransform("map", \
-                                              self.robot_frame_id, \
-                                              rospy.Time(), \
-                                              rospy.Duration(1.0))
-            
-            # Get the latest transformation between the source and target frames
-            (trans, rot) = self.tf_listener.lookupTransform("map", \
-                                                            self.robot_frame_id, \
-                                                            rospy.Time(0))
-            
-        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
-            # Handle exceptions related to transform lookup
-            rospy.logerr(logger_prefix + "Transform Exception: " + e)
+            # Get the latest available transform between 'odom' and 'base_link'
+            transform = self.tf_buffer.lookup_transform('map', self.robot_frame_id, rospy.Time(0), rospy.Duration(1.0))
+        except tf2_ros.LookupException as e:
+            rospy.logwarn(logger_prefix + "Transform lookup failed: %s", str(e))
             return res
-
+        except tf2_ros.ConnectivityException as e:
+            rospy.logwarn(logger_prefix + "Connectivity issue: %s", str(e))
+            return res
+        except tf2_ros.ExtrapolationException as e:
+            rospy.logwarn(logger_prefix + "Extrapolation issue: %s", str(e))
+            return res
 
         # check if its smaller 
         goal_score = GoalScore()
-        diff_x = target.goal_pose.translation.x - trans.x
-        diff_y = target.goal_pose.translation.y - trans.y
+        diff_x = target.goal_pose.translation.x - transform.transform.translation.x
+        diff_y = target.goal_pose.translation.y - transform.transform.translation.y
+
+        (target_roll, target_pitch, target_yaw) = tft.euler_from_quaternion(getQuatArray(target.goal_pose.rotation))
+        (robot_roll, robot_pitch, robot_yaw) = tft.euler_from_quaternion(getQuatArray(transform.transform.rotation))
+        diff_phi = target_yaw - robot_yaw
+        diff_phi = abs(diff_phi)
+        while (diff_phi > math.pi):
+            diff_phi -= math.pi
         
         goal_score.deviation_lin = math.sqrt(diff_x * diff_x + diff_y * diff_y)
-        goal_score.deviation_ang = 0
+        goal_score.deviation_ang = diff_phi
+        goal_score.name = req.goal_name
 
         if(goal_score.deviation_lin > self.max_goal_dev_lin):
-            rospy.logerr(logger_prefix + "The linear goal deviation [" + goal_score.deviation_lin + "] is too large!")
+            rospy.logerr(logger_prefix + "The linear goal deviation [" + str(goal_score.deviation_lin) + "] is too large!")
             return res
         elif(goal_score.deviation_ang > self.max_goal_dev_ang):
-            rospy.logerr(logger_prefix + "The angular goal deviation [" + goal_score.deviation_ang + "] is too large!")
+            rospy.logerr(logger_prefix + "The angular goal deviation [" + str(goal_score.deviation_ang) + "] is too large!")
             return res 
 
         # at this point we can confirm that the goal is reached
         goal_score.is_reached = True
         goal_score.time_to_reach_s = (rospy.Time.now() - self.task_exec_timer).to_sec()
 
-        rospy.loginfo(logger_prefix + "Successfully reached a goal pose!")
-        goal_score.print()
+        rospy.loginfo(logger_prefix + "Successfully reached the goal pose [" + req.goal_name + "]!")
+        goal_score.print(logger_prefix)
 
-        for score in self.goal_scores:
-            if(score.name == req.goal_name):
-                score = goal_score
+        for i, score in enumerate(self.goal_scores):
+            if score.name == goal_score.name:
+                self.goal_scores[i] = goal_score
 
         res.success = True
         return res
@@ -323,21 +334,21 @@ class Master_Control_Server:
         total_dev_lin = 0
         total_dev_ang = 0
         for score in self.goal_scores:
+            score.print(logger_prefix)
             if score.is_reached:
                 goals_reached += 1
-                score.print()
                 total_dev_lin += score.deviation_lin
                 total_dev_ang += score.deviation_ang
 
         if(goals_reached == total_goals):
             rospy.loginfo(logger_prefix + "Reached all goals!")
             total_time = (rospy.Time.now() - self.task_exec_timer).to_sec()
-            rospy.loginfo(logger_prefix + "Total Time: " + str(total_time))
-            rospy.loginfo(logger_prefix + "Linear Deviation - Total [" + str(total_dev_lin) + "] - Median: " + str(total_dev_lin/total_goals) )
-            rospy.loginfo(logger_prefix + "Angular Deviation - Total [" + str(total_dev_ang) + "] - Median: " + str(total_dev_ang/total_goals) )
+            rospy.loginfo(logger_prefix + "Total Time: " + str(round(total_time, 3)))
+            rospy.loginfo(logger_prefix + "Linear Deviation - Total [" + str(round(total_dev_lin, 3)) + "] - Median [" + str(round(total_dev_lin/total_goals, 3)) + "]")
+            rospy.loginfo(logger_prefix + "Angular Deviation - Total [" + str(round(total_dev_ang, 3)) + "] - Median [" + str(round((total_dev_ang/total_goals, 3))) + "]")
             res.success = True
         else:
-            rospy.logwarn(logger_prefix + "Did NOT reach all poses! Only [" + str(goals_reached) + "] out of [" + total_goals + "]")
+            rospy.logwarn(logger_prefix + "Did NOT reach all poses! Only [" + str(goals_reached) + "] out of [" + str(total_goals) + "]")
 
         return res
 
