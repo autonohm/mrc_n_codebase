@@ -72,6 +72,15 @@ PROVIDE LINK
 
 # 6. How to upload your code
 
+Use [this template repository](https://github.com/autonohm/mrc_n_group_0) to fork and create your own repo for your group.
+Make sure to set it to private and to add your colleagues.
+
+Also add us so we can access and review your work:
+- Marco Masannek (marcomasa)
+- Dong Wang (wayne-dwa)
+- Rolf Schmidt (rs-waid)
+- Hannes Haag (todo)
+
 # 7. The Master Control Node
 
 
