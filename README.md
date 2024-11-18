@@ -176,14 +176,23 @@ your_user@your_machine:$ git clone --branch mrc_sim https://github.com/autonohm/
 
 ## General Overview
 
-![](https://github.com/autonohm/mcr_n_codebase/blob/main/images/basic_architecture_v1.png)
+You will need to set up the navigation stack for the provided robot and
+write your own statemachine to connect to the master control.
 
-## Simulation
-
-![](https://github.com/autonohm/mcr_n_codebase/blob/main/images/basic_sim_v1.png)
+![](./images/goal_architecture.png)
 
 ## Navigation
-![](https://github.com/autonohm/mcr_n_codebase/blob/main/images/basic_navigation_v1.png)
+
+![](./images/nav_connections.png)
+
+## Statemachine
+
+The statemachine is responsible to connect to the master control server, get the tasks (the goal poses) 
+from it, confirm when a goal is reached, and finally set the status to finished.
+
+![](./images/statemachine_connections.png)
+
+![](./images/example_statemachine.png)
 
 
 # 7. Example Robot Behavior
@@ -253,7 +262,7 @@ process[master_control_server-2]: started with pid [31300]
 
 If you open RVIZ and add the topic type 'TF', you should be able to see the goal poses visualized:
 
-![](https://github.com/autonohm/mcr_n_codebase/blob/main/images/mc_pose_example.png)
+![](./images/mc_pose_example.png)
 
 
 ## 9.2 Connecting to the Server
