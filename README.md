@@ -5,6 +5,9 @@ Welcome to the codebase repository for the MCR-N course!
 
 # Development State!
 
+TODo Remove: hier dann bitte die Slides und größeren Files rein:
+
+https://1drv.ms/f/s!Av9EgKpWKlj-gp1GSEwbTssOGBg36A?e=d9G274
 
 # Overview
 
@@ -29,23 +32,146 @@ The goal is for the students to integrate their work into the given system.
 
 
 
-# 2. Useful Links
+# 2. Setting up your environment
 
-TODo Remove: hier dann bitte die Slides und größeren Files rein:
+There are three options to set up your programming workspace.
+The easiest way for most students will probably downloading our virtual machine image.
+For more advanced students, installing a native linux or WSL2 environment should
+allow them for smoother workflows due to better resource usage.
 
-https://1drv.ms/f/s!Av9EgKpWKlj-gp1GSEwbTssOGBg36A?e=d9G274
+## Virtual Machine
+
+1. Download [VirtualBox](https://www.virtualbox.org/)
+2. Download our Ubuntu-20.04 image
+3. Add our image to your VB environment
+4. Configure the system resources for your VB
+5. Run the virtual machine
+
+## Native Linux
+
+Installing a native linux on a machine requires atleast 40 GB of free disk space and
+a USB stick with atleast 16GB.
+If you plan to install linux alongside your regular OS (e.g. Windows),
+you should also be somewhat confident in what you are doing, since you can actually make your 
+normal OS unusable.
+
+1. Download [Ubuntu 20.04.6](https://releases.ubuntu.com/focal/)
+2. Create a bootable USB stick using that image
+3. (Optional for Dual-Boot) Allocate some free memory on your harddrive
+4. Install Linux on the dedicated partition
 
 
-## Windows Sublinux
+## WSL (Windows Subsystem for Linux)
 
-## ROS 2 Humble
+Using a WSL can be the easiest and most powerful way to use a linux environment in Windows.
+However, it natively provides only very limited graphical user interfaces, hence it is recommended for 
+users who are somewhat familiar with linux and/or command line usage. 
 
-## ROS 2 Navigation Stack
+Taken from [these install instructions](https://learn.microsoft.com/en-us/windows/wsl/install), 
+getting a Ubuntu 20.04 distro can be easily done by opening a Windows PowerShell and executing this command:
 
-## Python Simulator ROS 2
+```
+## Windows PowerShell
 
-[Python Simulator by Prof May](https://github.com/autonohm/ohm_mecanum_sim/tree/ros2)
+wsl --install -d Ubuntu-20.04
+```
 
+Once the installation is completed, you will be asked to configure your username and password.
+You will then be prompted with a linux terminal. Please update the system before doing any additional work:
+
+```
+## Linux Shell
+
+sudo apt update && sudo apt upgrade
+```
+
+You can refer to [best practices](https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password) 
+during the setup to get some advice regarding the usage of the WSL.
+However, we recommend just using the regular terminal (you can add a shortcut in your task bar),
+the windows explorer (navigate to Linux/Ubuntu-20.04/..) and the VS Code integration.
+
+For VS Code, first install from [here](https://code.visualstudio.com/download) and then follow the [integration manual](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-vscode).
+
+
+## Linux Packages for Non-VM Users
+
+### Regular Dependencies
+
+Please execute this command to install necessary dependencies when NOT using our VM.
+
+```
+## Linux Shell
+
+sudo apt install htop ssh
+```
+
+### ROS 1 Noetic
+
+You can follow [these instructions](http://wiki.ros.org/noetic/Installation/Ubuntu) to install ROS noetic.
+Usually, you will only need these commands:
+
+```
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+
+sudo apt install curl
+
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+
+sudo apt update
+
+sudo apt install ros-noetic-desktop-full
+
+source /opt/ros/noetic/setup.bash
+
+echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+
+source ~/.bashrc
+
+sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
+
+sudo rosdep init
+
+rosdep update
+```
+
+
+# 3. Using ROS
+
+## Tutorials
+
+The [ROS Tutorials](http://wiki.ros.org/ROS/Tutorials) are a great way to get familiar with basic ROS functionalities.
+In addition to our course material, it might make sense for inexperienced students to look into these specific beginner tutorials:
+
+(1, 3 - 8, 11 - 16)
+
+The rest is nice to know, but not specifically required for our course.
+
+For later integration of the navigation stack, please make yourself also familiar with the [actionlib tutorials](http://wiki.ros.org/actionlib_tutorials/Tutorials).
+
+
+# 4. Installing our course materials
+
+Once you have set up your workspace, go to your 'catkin_ws/src' folder and clone our repositories:
+
+```
+## Change into your catkin workspace (replace your path if necessary)
+your_user@your_machine:$ cd catkin_ws/src
+```
+
+
+## MRC Codebase
+
+```
+your_user@your_machine:$ git clone https://github.com/autonohm/mrc_n_codebase.git 
+
+```
+
+## Python Simulator
+
+```
+your_user@your_machine:$ git clone --branch mrc_sim https://github.com/autonohm/ohm_mecanum_sim.git
+
+```
 
 
 # 3. Hardware Description
