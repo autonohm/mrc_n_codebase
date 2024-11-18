@@ -2,17 +2,11 @@
 
 Welcome to the codebase repository for the MCR-N course!
 
-
-# Development State!
-
-TODo Remove: hier dann bitte die Slides und größeren Files rein:
-
-https://1drv.ms/f/s!Av9EgKpWKlj-gp1GSEwbTssOGBg36A?e=d9G274
-
 # Overview
 
 1. Basic Idea
-2. Useful links
+2. Setting up the Environment
+3. Using ROS
 3. Hardware Description
 4. Target Software Architecture
 5. Example Robot Behavior
@@ -174,11 +168,11 @@ your_user@your_machine:$ git clone --branch mrc_sim https://github.com/autonohm/
 ```
 
 
-# 3. Hardware Description
+# 5. Hardware Description
 
 
 
-# 4. Target Software Architecture
+# 6. Target Software Architecture
 
 ## General Overview
 
@@ -192,11 +186,11 @@ your_user@your_machine:$ git clone --branch mrc_sim https://github.com/autonohm/
 ![](https://github.com/autonohm/mcr_n_codebase/blob/main/images/basic_navigation_v1.png)
 
 
-# 5. Example Robot Behavior
+# 7. Example Robot Behavior
 
 PROVIDE LINK
 
-# 6. How to upload your code
+# 8. How to upload your code
 
 Use [this template repository](https://github.com/autonohm/mrc_n_group_0) to fork and create your own repo for your group.
 Make sure to set it to private and to add your colleagues.
@@ -207,10 +201,10 @@ Also add us so we can access and review your work:
 - Rolf Schmidt (rs-waid)
 - Hannes Haag (todo)
 
-# 7. The Master Control Node
+# 9. The Master Control Node
 
 
-## 7.1 Starting the Server
+## 9.1 Starting the Server
 
 The master control node acts as the task server. Once you built this pkg, 
 you can start the node using the provided launchfile:
@@ -262,7 +256,7 @@ If you open RVIZ and add the topic type 'TF', you should be able to see the goal
 ![](https://github.com/autonohm/mcr_n_codebase/blob/main/images/mc_pose_example.png)
 
 
-## 7.2 Connecting to the Server
+## 9.2 Connecting to the Server
 
 Robots must connect to the server using the provided 'mcs_connect' service,
 providing their name.
@@ -282,7 +276,7 @@ The node should output the following:
 
 However, you will need to connect to the server from your own statemachine file!
 
-## 7.3 Getting Tasks from the Server
+## 9.3 Getting Tasks from the Server
 
 The target task from the server can be queried using the provided service:
 
@@ -314,7 +308,7 @@ The node should output the following:
 [ERROR] [1725715131.461621]: [MCS]      This robot [abc] has not connected before. Rejecting task request!
 ```
 
-## 7.4 Confirming a reached goal
+## 9.4 Confirming a reached goal
 
 Once your robot has reached a goal, you are supposed to confirm this with the server.
 You just have to tell the server which goal pose you think you reached, and the server 
@@ -347,7 +341,7 @@ If your robot did not reach the goal pose, the service will return 'False' and t
 [ERROR] [1727103673.020986]: [MCS]      The angular goal deviation [1.6700000000000004] is too large!
 ```
 
-## 7.5 Setting your task execution status to finished
+## 9.5 Setting your task execution status to finished
 
 Once your robot has reached all goals (therefore finishing his task),
 you are supposed to tell the server by executing the following service:
@@ -382,7 +376,7 @@ This triggers stopping the time and printing your statistics if you reached all 
 ```
 
 
-## 7.6 Mockup Example Run
+## 9.6 Mockup Example Run
 
 The following output of the master control server would be produced when running through the mockup task,
 with some initial troubles aligning with the goal orientation:
@@ -436,7 +430,7 @@ with some initial troubles aligning with the goal orientation:
 [INFO] [1727103684.769005]: [MCS]       Angular Deviation - Total [0.13] - Median [0.065]
 ```
 
-## 7.7 Example Statemachine 
+## 9.7 Example Statemachine 
 
 This is an example of how your statemachine should and could look like:
 
