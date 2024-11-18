@@ -170,7 +170,10 @@ your_user@your_machine:$ git clone --branch mrc_sim https://github.com/autonohm/
 
 # 5. Hardware Description
 
+You will be programming for our Kobuki robot. It is equipped with a mobile processing unit,
+a 2D-LiDAR sensor, a WiFi module and a differential drive.
 
+![](./images/kobuki_image.png)
 
 # 6. Target Software Architecture
 
