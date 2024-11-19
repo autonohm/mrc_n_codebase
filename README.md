@@ -166,7 +166,7 @@ your_user@your_machine:$ git clone https://github.com/autonohm/mrc_n_codebase.gi
 Our [python simulator](https://github.com/autonohm/ohm_kobuki_sim):
 
 ```
-your_user@your_machine:$ git clone git@github.com:autonohm/ohm_kobuki_sim.git
+your_user@your_machine:$ git clone https://github.com/autonohm/ohm_kobuki_sim.git
 
 ```
 
