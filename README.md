@@ -163,8 +163,7 @@ your_user@your_machine:$ git clone https://github.com/autonohm/mrc_n_codebase.gi
 ## Python Simulator
 
 ```
-your_user@your_machine:$ git clone --branch mrc_sim https://github.com/autonohm/ohm_mecanum_sim.git
-
+your_user@your_machine:$ git clone https://github.com/autonohm/ohm_kobuki_sim
 ```
 
 
