@@ -4,21 +4,20 @@ Welcome to the codebase repository for the MCR-N course!
 
 # Overview
 
-1. Basic Idea
-2. Setting up the Environment
-3. Using ROS
-3. Hardware Description
-4. Target Software Architecture
-5. Example Robot Behavior
-6. Uploading your Code
-7. Using the Master Control Node
-
-
+1. [Basic Idea](1-basic-idea)
+2. [Setting up the Environment](2-setting-up-the-environment)
+3. [Using ROS](3-using-ros)
+4. [Installing our course materials](4-installing-our-course-materials)
+5. [Hardware Description](5-hardware-description)
+6. [Target Software Architecture](6-target-software-architecture)
+7. [Example Robot Behavior](7-example-robot-behavior)
+8. [Uploading your Code](8-uploading-your-code)
+9. [Using the Master Control Node](9-using-the-master-control-node)
 
 # 1. Basic Idea
 
 Students shall program robots to navigate a pre-defined parcours.
-With given hardware specifications (Praktikumsplattform), students should implement
+With given hardware specifications (Kobuki Robot), students should implement
 robot localization, task following and navigation.
 
 We provide them with a well-defined environment that they should use.
@@ -155,6 +154,8 @@ your_user@your_machine:$ cd catkin_ws/src
 
 ## MRC Codebase
 
+This codebase:
+
 ```
 your_user@your_machine:$ git clone https://github.com/autonohm/mrc_n_codebase.git 
 
@@ -162,8 +163,10 @@ your_user@your_machine:$ git clone https://github.com/autonohm/mrc_n_codebase.gi
 
 ## Python Simulator
 
+Our [python simulator](https://github.com/autonohm/ohm_kobuki_sim):
+
 ```
-your_user@your_machine:$ git clone --branch mrc_sim https://github.com/autonohm/ohm_mecanum_sim.git
+your_user@your_machine:$ git clone git@github.com:autonohm/ohm_kobuki_sim.git
 
 ```
 
@@ -200,18 +203,21 @@ from it, confirm when a goal is reached, and finally set the status to finished.
 
 # 7. Example Robot Behavior
 
-PROVIDE LINK
+TODO: Add GIF
 
 # 8. How to upload your code
 
-Use [this template repository](https://github.com/autonohm/mrc_n_group_0) to fork and create your own repo for your group.
-Make sure to set it to private and to add your colleagues.
+Clone [this template repository](https://github.com/autonohm/mrc_n_group_0) to your local machine and rename it according to your group id.
+In your private account, set up a private repository with this exact name.
+Change the remote adress of your repository to the adress you just created and add your colleagues to allow them collaborating with you.
 
 Also add us so we can access and review your work:
 - Marco Masannek (marcomasa)
 - Dong Wang (wayne-dwa)
-- Rolf Schmidt (rs-waid)
-- Hannes Haag (todo)
+- Rolf Schmidt (rs-grimbart)
+- Hannes Haag (hannes3010)
+
+You will find detailed instructions in the template repository.
 
 # 9. The Master Control Node
 
