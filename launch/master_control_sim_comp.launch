@@ -1,0 +1,20 @@
+
+<launch>
+
+    <node name="master_control_server" pkg="mrc_n_codebase" type="master_control_node.py" output="screen">
+        
+        <!-- Teams are allowed to adjust this for their own testing purposes -->
+        <param name="folder_path"                   value="$(find mrc_n_codebase)/master_control_tasks" />
+        <param name="target_task_name"              value="sim_competition" /> 
+
+        <!-- Teams are not supposed to change params after this line! -->
+        <param name="topic_connect"                 value="master_control/connect" />
+        <param name="topic_get_tasks"               value="master_control/get_tasks" />
+        <param name="topic_confirm_goal_reached"    value="master_control/confirm_goal_reached" />
+
+        <param name="robot_frame_id"                value="base_link" />
+        <param name="max_goal_deviation_linear"     value="0.1" />
+        <param name="max_goal_deviation_angular"    value="0.2" />
+        
+    </node>
+</launch>
