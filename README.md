@@ -203,7 +203,16 @@ from it, confirm when a goal is reached, and finally set the status to finished.
 
 # 7. Example Robot Behavior
 
+# 7.1 Sim Competition Task
+
+![](./images/sim_comp_img.png)
+
 TODO: Add GIF
+
+# 7.2 Real Competition Task
+
+TODO: Add GIF
+
 
 # 8. How to upload your code
 
@@ -453,6 +462,16 @@ with some initial troubles aligning with the goal orientation:
 This is an example of how your statemachine should and could look like:
 
 ![](https://github.com/autonohm/mcr_n_codebase/blob/main/uml/statemachine_example.png)
+
+
+## 9.8 Launching the Sim Competition Configuration
+
+To launch the competition configuration for the simulated environment,
+just launch the modified launchfile:
+
+```
+your_user@your_machine:~$ roslaunch mrc_n_codebase master_control_sim_comp.launch
+```
 
 
 
