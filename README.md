@@ -126,7 +126,13 @@ sudo rosdep init
 
 rosdep update
 ```
+### ROS 1 Packages
 
+You will need to install some additional ROS packages to use all applications used in this course. 
+
+```
+sudo apt install ros-noetic-gmapping
+```
 
 # 3. Using ROS
 
