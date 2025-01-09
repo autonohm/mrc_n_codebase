@@ -344,7 +344,7 @@ class Master_Control_Server:
             total_time = (rospy.Time.now() - self.task_exec_timer).to_sec()
             rospy.loginfo(logger_prefix + "Total Time: " + str(round(total_time, 3)))
             rospy.loginfo(logger_prefix + "Linear Deviation - Total [" + str(round(total_dev_lin, 3)) + "] - Median [" + str(round(total_dev_lin/total_goals, 3)) + "]")
-            rospy.loginfo(logger_prefix + "Angular Deviation - Total [" + str(round(total_dev_ang, 3)) + "] - Median [" + str(round((total_dev_ang/total_goals, 3))) + "]")
+            rospy.loginfo(logger_prefix + "Angular Deviation - Total [" + str(round(total_dev_ang, 3)) + "] - Median [" + str(round(total_dev_ang/total_goals, 3)) + "]")
             res.success = True
         else:
             rospy.logwarn(logger_prefix + "Did NOT reach all poses! Only [" + str(goals_reached) + "] out of [" + str(total_goals) + "]")
